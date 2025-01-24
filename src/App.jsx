@@ -1,15 +1,22 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useNavigate,
+} from "react-router-dom";
 import "./App.css";
 import TodoList from "./components/TodoList";
 import AddTodoForm from "./components/AddTodoForm";
+import InputWithLabel from "./components/InputWithLabel";
 
 function App() {
   const [todoList, setTodoList] = useState(() => {
     return JSON.parse(localStorage.getItem("userTodoList")) || [];
   });
 
-  const [currentMode, setCurrentMode] = useState("Painting"); // Текущий режим
+  const [currentMode, setCurrentMode] = useState("Painting"); // Current mode
+  const [customMaterial, setCustomMaterial] = useState("");
 
   const materialsByMode = {
     Painting: [
@@ -22,7 +29,7 @@ function App() {
       "Easel",
       "Palette Knife",
       "Gesso",
-      "Varnish"
+      "Varnish",
     ],
     Sculpting: [
       "Clay",
@@ -34,7 +41,7 @@ function App() {
       "Wooden Modeling Tools",
       "Cutting Mat",
       "Sculpting Armature",
-      "Polishing Tools"
+      "Polishing Tools",
     ],
     Drawing: [
       "Pencils",
@@ -46,7 +53,7 @@ function App() {
       "Fine Liners",
       "Markers",
       "Rulers",
-      "Fixative Spray"
+      "Fixative Spray",
     ],
     Calligraphy: [
       "Calligraphy Pens",
@@ -58,7 +65,7 @@ function App() {
       "Rulers for Layout",
       "Gold Ink",
       "Oblique Pen Holder",
-      "Calligraphy Practice Pads"
+      "Calligraphy Practice Pads",
     ],
     SoapMaking: [
       "Soap Base",
@@ -70,7 +77,7 @@ function App() {
       "Thermometer",
       "Mixing Spoons",
       "Rubbing Alcohol Spray",
-      "Packaging Materials"
+      "Packaging Materials",
     ],
     Mosaic: [
       "Glass Tiles",
@@ -82,7 +89,7 @@ function App() {
       "Grouting Tools",
       "Gloves",
       "Mosaic Frames",
-      "Sealer"
+      "Sealer",
     ],
     Decoupage: [
       "Decoupage Paper",
@@ -94,7 +101,7 @@ function App() {
       "Sealer",
       "Gesso",
       "Wooden Items",
-      "Varnish"
+      "Varnish",
     ],
     JewelryMaking: [
       "Beads",
@@ -106,7 +113,7 @@ function App() {
       "Crimp Beads",
       "Gemstones",
       "Charms",
-      "Wire Cutters"
+      "Wire Cutters",
     ],
     DigitalArt: [
       "Graphics Tablet",
@@ -118,7 +125,7 @@ function App() {
       "Brush Packs",
       "Reference Images",
       "Keyboard Shortcuts Chart",
-      "Cloud Storage"
+      "Cloud Storage",
     ],
     Photography: [
       "Camera",
@@ -130,7 +137,7 @@ function App() {
       "Camera Bag",
       "Memory Cards",
       "Editing Software",
-      "Filters"
+      "Filters",
     ],
     Weaving: [
       "Weaving Loom",
@@ -142,7 +149,7 @@ function App() {
       "Scissors",
       "Weaving Needles",
       "Yarn",
-      "Tension Device"
+      "Tension Device",
     ],
     CandleMaking: [
       "Wax (Soy, Beeswax, Paraffin)",
@@ -154,7 +161,7 @@ function App() {
       "Thermometer",
       "Pouring Pitcher",
       "Glue Dots",
-      "Wick Holders"
+      "Wick Holders",
     ],
     Pyrography: [
       "Wood Burning Tool",
@@ -166,9 +173,9 @@ function App() {
       "Rulers",
       "Stencils",
       "Design Templates",
-      "Finishing Spray"
-    ]
-  };  
+      "Finishing Spray",
+    ],
+  };
 
   useEffect(() => {
     localStorage.setItem("userTodoList", JSON.stringify(todoList));
@@ -184,14 +191,28 @@ function App() {
     setTodoList(updatedList);
   };
 
-  // Кнопки для переключения режимов
-  const renderModeButtons = () => {
+  const handleCustomMaterialChange = (event) => {
+    setCustomMaterial(event.target.value);
+  };
+
+  const handleCustomMaterialSubmit = (event) => {
+    event.preventDefault();
+    if (customMaterial.trim()) {
+      addTodo(customMaterial);
+      setCustomMaterial(""); // Reset input field
+    }
+  };
+  // render buttons to switch modes
+  const renderModeButtons = (navigate) => {
     return (
       <div>
         {Object.keys(materialsByMode).map((mode) => (
           <button
             key={mode}
-            onClick={() => setCurrentMode(mode)} // Переключаем режим
+            onClick={() => {
+              setCurrentMode(mode); // Switch mode
+              if (navigate) navigate("/supplies"); // navigate to the list page
+            }}
           >
             {mode}
           </button>
@@ -200,32 +221,62 @@ function App() {
     );
   };
 
-  function SuppliesPage() {
+  //Home page
+
+  function Home() {
+    const navigate = useNavigate(); // Hook for navigation between pages
+
     return (
       <div>
-        <h2>Mode: {currentMode}</h2>
-        {renderModeButtons()}
-        <AddTodoForm
-          onAddTodo={addTodo}
-          recommendedMaterials={materialsByMode[currentMode]} // Только материалы текущего режима
-        />
-        <TodoList todoList={todoList} onRemoveTodo={removeTodo} />
-        <button onClick={() => window.print()}>Print List</button>
+        <br />
+        <h2>Welcome to the Art Supplies List App!</h2>
+        <h3>Part of the ArtNest Project</h3>
+        <br />
+        <p>Select your art type to get started:</p>
+        <br />
+        {/* Button to choose the mode */}
+        {renderModeButtons(navigate)}
       </div>
     );
   }
 
-  return (
-    <Router>
-      <div>
-        <h1>Art Supplies List</h1>
-        <Routes>
-          <Route path="/" element={<h2>Welcome to the Art Supplies List App!</h2>} />
-          <Route path="/supplies" element={<SuppliesPage />} />
-        </Routes>
-      </div>
-    </Router>
-  );
-}
+    // Supplies page
 
-export default App;
+    function SuppliesPage() {
+      return (
+        <div>
+          <h2>Mode: {currentMode}</h2>
+          {renderModeButtons()} {/* Render buttons for switching modes */}
+          <AddTodoForm
+            onAddTodo={addTodo}
+            recommendedMaterials={materialsByMode[currentMode]} // Current mode supplies only
+          />
+          <form onSubmit={handleCustomMaterialSubmit}>
+            <InputWithLabel
+              todoTitle={customMaterial}
+              handleTitleChange={handleCustomMaterialChange}
+            >
+              Add your own material:
+            </InputWithLabel>
+            <button type="submit">Add</button>
+          </form>
+          <TodoList todoList={todoList} onRemoveTodo={removeTodo} />
+          <button onClick={() => window.print()}>Print List</button>
+        </div>
+      );
+    }
+  
+    return (
+      <Router>
+        <div>
+          <h1>Art Supplies List</h1>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/supplies" element={<SuppliesPage />} />
+          </Routes>
+        </div>
+      </Router>
+    );
+  }
+  
+  export default App;
