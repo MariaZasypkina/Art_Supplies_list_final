@@ -191,6 +191,10 @@ function App() {
     setTodoList(updatedList);
   };
 
+  const clearTodoList = () => {
+    setTodoList([]); // clear the list
+  };
+
   const handleCustomMaterialChange = (event) => {
     setCustomMaterial(event.target.value);
   };
@@ -262,6 +266,7 @@ function App() {
           </form>
           <TodoList todoList={todoList} onRemoveTodo={removeTodo} />
           <button onClick={() => window.print()}>Print List</button>
+          <button onClick={clearTodoList}>Clear List</button>
         </div>
       );
     }
