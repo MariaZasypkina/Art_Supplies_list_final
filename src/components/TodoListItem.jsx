@@ -13,7 +13,7 @@ function TodoListItem({ todo, onRemoveTodo }) {
 // Define prop types
 TodoListItem.propTypes = {
   todo: PropTypes.shape({
-    id: PropTypes.number.isRequired,
+    id: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
   }).isRequired,
   onRemoveTodo: PropTypes.func.isRequired,
