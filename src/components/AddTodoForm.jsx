@@ -1,18 +1,19 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import InputWithLabel from "./InputWithLabel";
 
 function AddTodoForm({ onAddTodo, recommendedMaterials }) {
-  const [selectedMaterial, setSelectedMaterial] = useState("");
+  const [todoTitle, setTodoTitle] = useState("");
 
-  const handleSelectChange = (event) => {
-    setSelectedMaterial(event.target.value);
+  const handleTitleChange = (event) => {
+    setTodoTitle(event.target.value);
   };
 
   const handleAddTodo = (event) => {
     event.preventDefault();
-    if (selectedMaterial.trim()) {
-      onAddTodo(selectedMaterial);
-      setSelectedMaterial(""); // Reset
+    if (todoTitle.trim()) {
+      onAddTodo(todoTitle);
+      setTodoTitle(""); // Reset input field
     }
   };
 
@@ -21,8 +22,8 @@ function AddTodoForm({ onAddTodo, recommendedMaterials }) {
       <label htmlFor="recommendedMaterials">Select from recommended:</label>
       <select
         id="recommendedMaterials"
-        value={selectedMaterial}
-        onChange={handleSelectChange}
+        value={todoTitle}
+        onChange={handleTitleChange}
       >
         <option value="">-- Select an item --</option>
         {recommendedMaterials.map((material, index) => (
@@ -31,6 +32,12 @@ function AddTodoForm({ onAddTodo, recommendedMaterials }) {
           </option>
         ))}
       </select>
+      <InputWithLabel
+        todoTitle={todoTitle}
+        handleTitleChange={handleTitleChange}
+      >
+        Add your own item:
+      </InputWithLabel>
       <button type="submit">Add</button>
     </form>
   );
