@@ -1,22 +1,93 @@
 import React, { useState, useEffect } from "react";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  useNavigate,
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
 import "./App.css";
 import TodoList from "./components/TodoList";
 import AddTodoForm from "./components/AddTodoForm";
 import InputWithLabel from "./components/InputWithLabel";
+import {
+  fetchAirtableData,
+  addAirtableRecord,
+  deleteAirtableRecord,
+  clearAirtableTable,
+} from "./airtableAPI.js";
 
 function App() {
-  const [todoList, setTodoList] = useState(() => {
+  const [localTodoList, setLocalTodoList] = useState(() => {
     return JSON.parse(localStorage.getItem("userTodoList")) || [];
   });
 
-  const [currentMode, setCurrentMode] = useState("Painting"); // Current mode
+  const [currentMode, setCurrentMode] = useState("Painting");
   const [customMaterial, setCustomMaterial] = useState("");
+
+  // Uploading daya from Airtable at start
+  useEffect(() => {
+    const fetchAirtableTodoList = async () => {
+      try {
+        const data = await fetchAirtableData();
+        setLocalTodoList(data); // Reshresh local list
+      } catch (error) {
+        console.error("Error fetching data from Airtable:", error);
+      }
+    };
+    fetchAirtableTodoList();
+  }, []);
+
+  // Sync with localStorage
+  useEffect(() => {
+    localStorage.setItem("userTodoList", JSON.stringify(localTodoList));
+  }, [localTodoList]);
+
+  // Adding supply
+  const addTodo = async (title) => {
+    const tempTodo = { id: Date.now().toString(), title };
+    setLocalTodoList([...localTodoList, tempTodo]); // Adding Locally
+
+    try {
+      const savedRecord = await addAirtableRecord(title); // Adding to Airtable
+      setLocalTodoList((prevList) =>
+        prevList.map((item) =>
+          item.id === tempTodo.id ? { ...item, id: savedRecord.id } : item
+        )
+      );
+    } catch (error) {
+      console.error("Error adding to Airtable:", error);
+    }
+  };
+
+  // Removing supply
+  const removeTodo = async (id) => {
+    setLocalTodoList(localTodoList.filter((todo) => todo.id !== id)); // From local storage
+
+    try {
+      await deleteAirtableRecord(id); // Delete in Airtable
+    } catch (error) {
+      console.error("Error deleting from Airtable:", error);
+    }
+  };
+
+  // Clear all list 
+  const clearTodoList = async () => {
+    const ids = localTodoList.map((item) => item.id);
+    setLocalTodoList([]); // Locally
+
+    try {
+      await clearAirtableTable(ids); // In Airtable
+    } catch (error) {
+      console.error("Error clearing Airtable table:", error);
+    }
+  };
+
+  const handleCustomMaterialChange = (event) => {
+    setCustomMaterial(event.target.value);
+  };
+
+  const handleCustomMaterialSubmit = (event) => {
+    event.preventDefault();
+    if (customMaterial.trim()) {
+      addTodo(customMaterial);
+      setCustomMaterial(""); // Input field reset
+    }
+  };
 
   const materialsByMode = {
     Painting: [
@@ -177,111 +248,69 @@ function App() {
     ],
   };
 
-  useEffect(() => {
-    localStorage.setItem("userTodoList", JSON.stringify(todoList));
-  }, [todoList]);
-
-  const addTodo = (title) => {
-    const newTodo = { id: Date.now(), title };
-    setTodoList([...todoList, newTodo]);
-  };
-
-  const removeTodo = (id) => {
-    const updatedList = todoList.filter((todo) => todo.id !== id);
-    setTodoList(updatedList);
-  };
-
-  const clearTodoList = () => {
-    setTodoList([]); // clear the list
-  };
-
-  const handleCustomMaterialChange = (event) => {
-    setCustomMaterial(event.target.value);
-  };
-
-  const handleCustomMaterialSubmit = (event) => {
-    event.preventDefault();
-    if (customMaterial.trim()) {
-      addTodo(customMaterial);
-      setCustomMaterial(""); // Reset input field
-    }
-  };
-  // render buttons to switch modes
-  const renderModeButtons = (navigate) => {
-    return (
-      <div>
-        {Object.keys(materialsByMode).map((mode) => (
-          <button
-            key={mode}
-            onClick={() => {
-              setCurrentMode(mode); // Switch mode
-              if (navigate) navigate("/supplies"); // navigate to the list page
-            }}
-          >
-            {mode}
-          </button>
-        ))}
-      </div>
-    );
-  };
-
-  //Home page
+  const renderModeButtons = (navigate) => (
+    <div>
+      {Object.keys(materialsByMode).map((mode) => (
+        <button
+          key={mode}
+          onClick={() => {
+            setCurrentMode(mode);
+            if (navigate) navigate("/supplies");
+          }}
+        >
+          {mode}
+        </button>
+      ))}
+    </div>
+  );
 
   function Home() {
-    const navigate = useNavigate(); // Hook for navigation between pages
-
+    const navigate = useNavigate();
     return (
       <div>
-        <br />
         <h2>Welcome to the Art Supplies List App!</h2>
         <h3>Part of the ArtNest Project</h3>
-        <br />
-        <p>Select your art type to get started:</p>
-        <br />
-        {/* Button to choose the mode */}
         {renderModeButtons(navigate)}
       </div>
     );
   }
 
-    // Supplies page
-
-    function SuppliesPage() {
-      return (
-        <div>
-          <h2>Mode: {currentMode}</h2>
-          {renderModeButtons()} {/* Render buttons for switching modes */}
-          <AddTodoForm
-            onAddTodo={addTodo}
-            recommendedMaterials={materialsByMode[currentMode]} // Current mode supplies only
-          />
-          <form onSubmit={handleCustomMaterialSubmit}>
-            <InputWithLabel
-              todoTitle={customMaterial}
-              handleTitleChange={handleCustomMaterialChange}
-            >
-              Add your own material:
-            </InputWithLabel>
-            <button type="submit">Add</button>
-          </form>
-          <TodoList todoList={todoList} onRemoveTodo={removeTodo} />
-          <button onClick={() => window.print()}>Print List</button>
-          <button onClick={clearTodoList}>Clear List</button>
-        </div>
-      );
-    }
-  
+  function SuppliesPage() {
     return (
-      <Router>
-        <div>
-          <h1>Art Supplies List</h1>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/supplies" element={<SuppliesPage />} />
-          </Routes>
-        </div>
-      </Router>
+      <div>
+        <h2>Mode: {currentMode}</h2>
+        {renderModeButtons()}
+        <AddTodoForm
+          onAddTodo={addTodo}
+          recommendedMaterials={materialsByMode[currentMode]}
+        />
+        <form onSubmit={handleCustomMaterialSubmit}>
+          <InputWithLabel
+            todoTitle={customMaterial}
+            handleTitleChange={handleCustomMaterialChange}
+          >
+            Add your own material:
+          </InputWithLabel>
+          <button type="submit">Add</button>
+        </form>
+        <TodoList todoList={localTodoList} onRemoveTodo={removeTodo} />
+        <button onClick={() => window.print()}>Print List</button>
+        <button onClick={clearTodoList}>Clear List</button>
+      </div>
     );
   }
-  
-  export default App;
+
+  return (
+    <Router>
+      <div>
+        <h1>Art Supplies List</h1>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/supplies" element={<SuppliesPage />} />
+        </Routes>
+      </div>
+    </Router>
+  );
+}
+
+export default App;
