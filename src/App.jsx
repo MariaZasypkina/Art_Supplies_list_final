@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Link,
+  useNavigate,
+} from "react-router-dom";
 import "./App.css";
 import TodoList from "./components/TodoList";
 import AddTodoForm from "./components/AddTodoForm";
@@ -18,15 +24,23 @@ function App() {
 
   const [currentMode, setCurrentMode] = useState("Painting");
   const [customMaterial, setCustomMaterial] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+  console.log("Initial isLoading:", isLoading);
 
   // Uploading daya from Airtable at start
   useEffect(() => {
     const fetchAirtableTodoList = async () => {
       try {
         const data = await fetchAirtableData();
-        setLocalTodoList(data); // Reshresh local list
+        //Sorting by title
+        const sortedData = data.sort((a, b) => a.title.localeCompare(b.title));
+        setLocalTodoList(sortedData); // Reshresh local list
       } catch (error) {
         console.error("Error fetching data from Airtable:", error);
+      } finally {
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 2000);
       }
     };
     fetchAirtableTodoList();
@@ -40,8 +54,12 @@ function App() {
   // Adding supply
   const addTodo = async (title) => {
     const tempTodo = { id: Date.now().toString(), title };
-    setLocalTodoList([...localTodoList, tempTodo]); // Adding Locally
 
+      setLocalTodoList((prevList) => { //Adding locally
+    const updatedList = [...prevList, tempTodo];
+    return updatedList.sort((a, b) => a.title.localeCompare(b.title)); // Sort by title 
+  });
+ 
     try {
       const savedRecord = await addAirtableRecord(title); // Adding to Airtable
       setLocalTodoList((prevList) =>
@@ -65,7 +83,7 @@ function App() {
     }
   };
 
-  // Clear all list 
+  // Clear all list
   const clearTodoList = async () => {
     const ids = localTodoList.map((item) => item.id);
     setLocalTodoList([]); // Locally
@@ -278,24 +296,35 @@ function App() {
   function SuppliesPage() {
     return (
       <div>
-        <h2>Mode: {currentMode}</h2>
+        <h1>I'm interested in {currentMode}</h1>
         {renderModeButtons()}
         <AddTodoForm
           onAddTodo={addTodo}
           recommendedMaterials={materialsByMode[currentMode]}
         />
-        <form onSubmit={handleCustomMaterialSubmit}>
-          <InputWithLabel
-            todoTitle={customMaterial}
-            handleTitleChange={handleCustomMaterialChange}
-          >
-            Add your own material:
-          </InputWithLabel>
-          <button type="submit">Add</button>
-        </form>
-        <TodoList todoList={localTodoList} onRemoveTodo={removeTodo} />
+
+        {isLoading ? (
+          <p style={{ color: "red", fontSize: "24px", textAlign: "center" }}>
+            Loading...
+          </p>
+        ) : (
+          <TodoList todoList={localTodoList} onRemoveTodo={removeTodo} />
+        )}
         <button onClick={() => window.print()}>Print List</button>
         <button onClick={clearTodoList}>Clear List</button>
+      </div>
+    );
+  }
+
+  function AboutPage() {
+    return (
+      <div>
+        <h2>About ArtNest Project</h2>
+        <p>
+          The ArtNest Project is a platform for artists of any age to share
+          their passion for creativity, get inspiration and organize their
+          supplies.
+        </p>
       </div>
     );
   }
@@ -303,10 +332,40 @@ function App() {
   return (
     <Router>
       <div>
+        {/*Navigation menu*/}
+        <nav>
+          <ul
+            style={{
+              display: "flex",
+              justifyContent: "space-around",
+              listStyle: "none",
+              padding: "10px"
+            }}
+          >
+            <li>
+              <Link to="/" style={{ textDecoration: "none" }}>
+                Home
+              </Link>
+            </li>
+            <li>
+              <Link to="/supplies" style={{ textDecoration: "none" }}>
+                Supplies
+              </Link>
+            </li>
+            <li>
+              <Link to="/about" style={{ textDecoration: "none" }}>
+                About
+              </Link>
+            </li>
+          </ul>
+        </nav>
+
         <h1>Art Supplies List</h1>
+
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/supplies" element={<SuppliesPage />} />
+          <Route path="/about" element={<AboutPage />} />
         </Routes>
       </div>
     </Router>
