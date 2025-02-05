@@ -16,6 +16,8 @@ import {
   deleteAirtableRecord,
   clearAirtableTable,
 } from "./airtableAPI.js";
+import materialsByMode from "./components/materials";
+import Header from "./components/header.jsx";
 
 function App() {
   const [localTodoList, setLocalTodoList] = useState(() => {
@@ -40,7 +42,7 @@ function App() {
       } finally {
         setTimeout(() => {
           setIsLoading(false);
-        }, 2000);
+        }, 800);
       }
     };
     fetchAirtableTodoList();
@@ -55,11 +57,12 @@ function App() {
   const addTodo = async (title) => {
     const tempTodo = { id: Date.now().toString(), title };
 
-      setLocalTodoList((prevList) => { //Adding locally
-    const updatedList = [...prevList, tempTodo];
-    return updatedList.sort((a, b) => a.title.localeCompare(b.title)); // Sort by title 
-  });
- 
+    setLocalTodoList((prevList) => {
+      //Adding locally
+      const updatedList = [...prevList, tempTodo];
+      return updatedList.sort((a, b) => a.title.localeCompare(b.title)); // Sort by title
+    });
+
     try {
       const savedRecord = await addAirtableRecord(title); // Adding to Airtable
       setLocalTodoList((prevList) =>
@@ -107,176 +110,23 @@ function App() {
     }
   };
 
-  const materialsByMode = {
-    Painting: [
-      "Brushes",
-      "Acrylic Paints",
-      "Oil Paints",
-      "Watercolors",
-      "Canvas",
-      "Palette",
-      "Easel",
-      "Palette Knife",
-      "Gesso",
-      "Varnish",
-    ],
-    Sculpting: [
-      "Clay",
-      "Modeling Tools",
-      "Wire",
-      "Sculpting Knife",
-      "Plaster",
-      "Silicone Molds",
-      "Wooden Modeling Tools",
-      "Cutting Mat",
-      "Sculpting Armature",
-      "Polishing Tools",
-    ],
-    Drawing: [
-      "Pencils",
-      "Erasers",
-      "Sketchpad",
-      "Charcoal",
-      "Blending Stumps",
-      "Colored Pencils",
-      "Fine Liners",
-      "Markers",
-      "Rulers",
-      "Fixative Spray",
-    ],
-    Calligraphy: [
-      "Calligraphy Pens",
-      "Inks",
-      "Special Paper",
-      "Brush Pens",
-      "Nib Holders",
-      "Guideline Sheets",
-      "Rulers for Layout",
-      "Gold Ink",
-      "Oblique Pen Holder",
-      "Calligraphy Practice Pads",
-    ],
-    SoapMaking: [
-      "Soap Base",
-      "Essential Oils",
-      "Dyes",
-      "Silicone Molds",
-      "Measuring Cups",
-      "Double Boiler",
-      "Thermometer",
-      "Mixing Spoons",
-      "Rubbing Alcohol Spray",
-      "Packaging Materials",
-    ],
-    Mosaic: [
-      "Glass Tiles",
-      "Ceramic Tiles",
-      "Tile Cutters",
-      "Adhesive",
-      "Grout",
-      "Sponges",
-      "Grouting Tools",
-      "Gloves",
-      "Mosaic Frames",
-      "Sealer",
-    ],
-    Decoupage: [
-      "Decoupage Paper",
-      "Mod Podge",
-      "Acrylic Paints",
-      "Sandpaper",
-      "Foam Brushes",
-      "Scissors",
-      "Sealer",
-      "Gesso",
-      "Wooden Items",
-      "Varnish",
-    ],
-    JewelryMaking: [
-      "Beads",
-      "Wire",
-      "Clasps",
-      "Pliers Set",
-      "Jewelry Findings",
-      "Stringing Material",
-      "Crimp Beads",
-      "Gemstones",
-      "Charms",
-      "Wire Cutters",
-    ],
-    DigitalArt: [
-      "Graphics Tablet",
-      "Stylus",
-      "Digital Art Software",
-      "Color Calibration Tool",
-      "High-Resolution Monitor",
-      "Drawing Gloves",
-      "Brush Packs",
-      "Reference Images",
-      "Keyboard Shortcuts Chart",
-      "Cloud Storage",
-    ],
-    Photography: [
-      "Camera",
-      "Tripod",
-      "Lighting Equipment",
-      "Reflectors",
-      "Backdrops",
-      "Lenses",
-      "Camera Bag",
-      "Memory Cards",
-      "Editing Software",
-      "Filters",
-    ],
-    Weaving: [
-      "Weaving Loom",
-      "Warp Threads",
-      "Weft Threads",
-      "Shuttle",
-      "Heddles",
-      "Comb",
-      "Scissors",
-      "Weaving Needles",
-      "Yarn",
-      "Tension Device",
-    ],
-    CandleMaking: [
-      "Wax (Soy, Beeswax, Paraffin)",
-      "Wicks",
-      "Fragrance Oils",
-      "Dyes",
-      "Candle Molds",
-      "Double Boiler",
-      "Thermometer",
-      "Pouring Pitcher",
-      "Glue Dots",
-      "Wick Holders",
-    ],
-    Pyrography: [
-      "Wood Burning Tool",
-      "Wood Panels",
-      "Carbon Paper",
-      "Sandpaper",
-      "Tips for Pyrography Tool",
-      "Safety Gloves",
-      "Rulers",
-      "Stencils",
-      "Design Templates",
-      "Finishing Spray",
-    ],
-  };
-
   const renderModeButtons = (navigate) => (
-    <div>
+    <div className="iconButtonsContainer">
       {Object.keys(materialsByMode).map((mode) => (
         <button
           key={mode}
+          className="iconButton"
           onClick={() => {
             setCurrentMode(mode);
             if (navigate) navigate("/supplies");
           }}
         >
-          {mode}
+          <img
+            src={`/images/icons/${mode.toLowerCase()}.webp`}
+            alt={mode}
+            className="icon"
+          />
+          <span>{mode}</span>
         </button>
       ))}
     </div>
@@ -294,6 +144,18 @@ function App() {
   }
 
   function SuppliesPage() {
+
+const printList = () => {
+  const printContents = document.getElementById("printableArea").cloneNode(true);
+  const newWindow = window.open("", "_blank");
+  
+  newWindow.document.body.appendChild(printContents);
+  newWindow.document.title = "Print List";
+  newWindow.focus();
+  newWindow.print();
+  newWindow.close();
+};
+
     return (
       <div>
         <h1>I'm interested in {currentMode}</h1>
@@ -303,15 +165,26 @@ function App() {
           recommendedMaterials={materialsByMode[currentMode]}
         />
 
-        {isLoading ? (
-          <p style={{ color: "red", fontSize: "24px", textAlign: "center" }}>
-            Loading...
-          </p>
-        ) : (
-          <TodoList todoList={localTodoList} onRemoveTodo={removeTodo} />
-        )}
-        <button onClick={() => window.print()}>Print List</button>
-        <button onClick={clearTodoList}>Clear List</button>
+        <div id="printableArea">
+          {isLoading ? (
+            <p
+              style={{ color: "green", fontSize: "14px", textAlign: "center" }}
+            >
+              Loading...
+            </p>
+          ) : (
+            <TodoList todoList={localTodoList} onRemoveTodo={removeTodo} />
+          )}
+        </div>
+        <div className="listButtons">
+          <button onClick={printList} className="listButton">
+            Print List
+          </button>
+
+          <button onClick={clearTodoList} className="listButton">
+            Clear List
+          </button>
+        </div>
       </div>
     );
   }
@@ -332,36 +205,8 @@ function App() {
   return (
     <Router>
       <div>
-        {/*Navigation menu*/}
-        <nav>
-          <ul
-            style={{
-              display: "flex",
-              justifyContent: "space-around",
-              listStyle: "none",
-              padding: "10px"
-            }}
-          >
-            <li>
-              <Link to="/" style={{ textDecoration: "none" }}>
-                Home
-              </Link>
-            </li>
-            <li>
-              <Link to="/supplies" style={{ textDecoration: "none" }}>
-                Supplies
-              </Link>
-            </li>
-            <li>
-              <Link to="/about" style={{ textDecoration: "none" }}>
-                About
-              </Link>
-            </li>
-          </ul>
-        </nav>
-
+        <Header /> {/*Navigation menu*/}
         <h1>Art Supplies List</h1>
-
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/supplies" element={<SuppliesPage />} />

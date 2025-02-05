@@ -1,0 +1,45 @@
+
+  .header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    background-color: transparent;
+    
+  }
+  
+  .banner {
+    width: 100%;
+    height: auto;
+    max-height: 700px;
+    object-fit: cover;
+    background-color: transparent;
+    border-radius: 20px;
+    -webkit-mask-image: radial-gradient(circle, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%);
+  mask-image: radial-gradient(circle, rgba(0,0,0,1) 70%, rgba(0,0,0,0) 100%);
+  }
+  
+  .navList {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    list-style: none;
+    padding: 10px 0;
+    margin: 0;
+  }
+  
+  .navLink {
+    text-decoration: none;
+    color: rgb(75, 119, 63);
+    font-size: x-large;
+    font-weight: bold;
+    padding: 10px 15px;
+    border-radius: 15px;
+    transition: background-color 0.3s;
+  }
+  
+  .navLink:hover {
+    background-color: #8ca98f;
+    color: antiquewhite;
+  }
+  
