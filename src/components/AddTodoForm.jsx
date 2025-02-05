@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import InputWithLabel from "./InputWithLabel";
+import styles from "./AddTodoForm.module.css";
 
 function AddTodoForm({ onAddTodo, recommendedMaterials }) {
   const [todoTitle, setTodoTitle] = useState("");
@@ -24,6 +25,7 @@ function AddTodoForm({ onAddTodo, recommendedMaterials }) {
         id="recommendedMaterials"
         value={todoTitle}
         onChange={handleTitleChange}
+        className={styles.select}
       >
         <option value="">-- Select an item --</option>
         {recommendedMaterials.map((material, index) => (
@@ -31,14 +33,17 @@ function AddTodoForm({ onAddTodo, recommendedMaterials }) {
             {material}
           </option>
         ))}
-      </select>
+      </select><br></br><br></br>
       <InputWithLabel
         todoTitle={todoTitle}
         handleTitleChange={handleTitleChange}
+        className={styles.input}
       >
-        Add your own item:
+        Add  your  own  art  supply: 
       </InputWithLabel>
-      <button type="submit">Add</button>
+      <br></br>
+      <button type="submit" className={styles.button}>Add</button>
+      <br></br>
     </form>
   );
 }

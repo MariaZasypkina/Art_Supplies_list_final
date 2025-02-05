@@ -1,0 +1,57 @@
+.listItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px;
+  border-bottom: 2px solid #ddd;
+  transition: background-color 0.3s ease;
+  width: 100%;
+}
+
+.listItem:hover {
+  background-color: rgba(236, 236, 226, 0.6);
+}
+
+.todoText {
+  flex-grow: 1;
+  text-align: left;
+  word-break: break-word;
+  font-size: 1.4rem; 
+  font-weight: bold; 
+}
+
+.removeButton {
+  background: none;
+  box-shadow: 0 0 15px rgba(39, 50, 39, 0.4);
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.removeButton:hover {
+  transform: scale(1.2);
+  box-shadow: 0 0 10px rgba(39, 50, 39, 0.4);
+}
+
+.trashIcon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+
+  -webkit-mask-image: radial-gradient(
+    circle,
+    rgba(0, 0, 0, 1) 10%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  mask-image: radial-gradient(
+    circle,
+    rgba(0, 0, 0, 1) 10%,
+    rgba(0, 0, 0, 0) 100%
+  );
+}

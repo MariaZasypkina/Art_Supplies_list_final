@@ -1,11 +1,15 @@
 import React from "react";
 import PropTypes from "prop-types";
+import styles from "./TodoListItem.module.css";
+import trashIcon from "/images/icons/trash.webp";
 
 function TodoListItem({ todo, onRemoveTodo }) {
   return (
-    <li>
-      {todo.title}
-      <button onClick={() => onRemoveTodo(todo.id)}>Remove</button>
+    <li className={styles.listItem}>
+      <span className={styles.todoText}>{todo.title}</span>
+      <button className={styles.removeButton} onClick={() => onRemoveTodo(todo.id)}>
+        <img src={trashIcon} alt="Remove" className={styles.trashIcon} />
+      </button>
     </li>
   );
 }

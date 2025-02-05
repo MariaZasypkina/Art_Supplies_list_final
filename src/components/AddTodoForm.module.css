@@ -1,0 +1,51 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 100px;
+  gap: 15px;
+  margin: 0 auto;
+}
+
+label {
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-bottom: 8px; 
+}
+
+.select
+{
+  width: 60%;
+  padding: 12px;
+  font-size: 1.2rem;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  background-color: rgb(236, 236, 226);
+  color: rgb(39, 50, 39);
+  transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+
+.select:hover
+ {
+  border: 2px solid rgb(39, 50, 39);
+  box-shadow: 0 0 15px rgba(39, 50, 39, 0.4);
+}
+
+
+.button {
+  background-color: rgba(243, 234, 181, 0.4);
+  box-shadow: 0 0 15px rgba(39, 50, 39, 0.4);
+  color: rgb(39, 50, 39);
+  padding: 12px;
+  font-size: 1.2rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.button:hover {
+  transform: scale(1.2);
+  box-shadow: 0 0 10px rgba(39, 50, 39, 0.4);
+  border: 2px  rgba(39, 50, 39, 0.6);
+}

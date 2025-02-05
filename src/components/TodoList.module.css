@@ -1,0 +1,27 @@
+.list {
+    list-style: none; 
+    padding: 0;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .listItem {
+    display: flex; 
+    align-items: center; 
+    gap: 12px;
+    padding: 12px;
+    border-bottom: 2px solid #ddd;
+    transition: background-color 0.3s ease;
+  }
+
+  .listItem:hover {
+    background-color: rgba(236, 236, 226, 0.6);
+  }
+
+.creativityIcon {
+    width: 30px; 
+    height: 30px;
+    margin-right: 8px; 
+    flex-shrink: 0; 
+  }
