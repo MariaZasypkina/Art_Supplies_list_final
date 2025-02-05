@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styles from "./TodoListItem.module.css";
+
 import trashIcon from "/images/icons/trash.jpg";
 
 function TodoListItem({ todo, onRemoveTodo }) {

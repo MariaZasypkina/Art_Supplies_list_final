@@ -27,6 +27,7 @@ function Header() {
       </nav>
       
        <img src="/images/banner1.jpg
+
        " alt="ArtNest Banner" className={styles.banner} />
 
     </header>

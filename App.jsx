@@ -122,8 +122,7 @@ function App() {
           }}
         >
           <img
-            src={`/images/icons/${mode.toLowerCase()}.jpg`}
-
+            src={`/images/icons/${mode.toLowerCase()}.webp`}
             alt={mode}
             className="icon"
           />
