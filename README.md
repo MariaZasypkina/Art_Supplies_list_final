@@ -60,7 +60,54 @@ VITE_AIRTABLE_TABLE_NAME=your_table_name_here
 4️⃣ Run the Project
 npm run dev
 
+Project Structure:
 
+package-lock.json
+├── package.json
+├── public
+│   ├── images
+│   │   ├── background.webp
+│   │   ├── banner.webp
+│   │   ├── banner1.webp
+│   │   ├── icons
+│   │      ├── calligraphy.webp
+│   │      ├── candlemaking.webp
+│   │      ├── creativity.webp
+│   │      ├── decoupage.webp
+│   │      ├── digitalart.webp
+│   │      ├── drawing.webp
+│   │      ├── jewelrymaking.webp
+│   │      ├── mosaic.webp
+│   │      ├── painting.webp
+│   │      ├── photography.webp
+│   │      ├── pyrography.webp
+│   │      ├── sculpting.webp
+│   │      ├── soapmaking.webp
+│   │      ├── trash.webp
+│   │      └── weaving.webp
+│   │  
+│   └── vite.svg
+├── src
+│   ├── App.css
+│   ├── App.jsx
+│   ├── airtableAPI.js
+│   ├── assets
+│   │   └── react.svg
+│   ├── components
+│   │   ├── AddTodoForm.jsx
+│   │   ├── AddTodoForm.module.css
+│   │   ├── Header.jsx
+│   │   ├── Header.module.css
+│   │   ├── InputWithLabel.jsx
+│   │   ├── InputWithLabel.module.css
+│   │   ├── TodoList.jsx
+│   │   ├── TodoList.module.css
+│   │   ├── TodoListItem.jsx
+│   │   ├── TodoListItem.module.css
+│   │   └── materials.js
+│   ├── index.css
+│   └── main.jsx
+└── vite.config.js
 
 Currently, two official plugins are available:
 
