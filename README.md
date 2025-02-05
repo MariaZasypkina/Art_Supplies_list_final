@@ -66,25 +66,25 @@ package-lock.json
 ├── package.json
 ├── public
 │   ├── images
-│   │   ├── background.webp
-│   │   ├── banner.webp
-│   │   ├── banner1.webp
+│   │   ├── backgroundjpg
+│   │   ├── bannerjpg
+│   │   ├── banner1jpg
 │   │   ├── icons
-│   │      ├── calligraphy.webp
-│   │      ├── candlemaking.webp
-│   │      ├── creativity.webp
-│   │      ├── decoupage.webp
-│   │      ├── digitalart.webp
-│   │      ├── drawing.webp
-│   │      ├── jewelrymaking.webp
-│   │      ├── mosaic.webp
-│   │      ├── painting.webp
-│   │      ├── photography.webp
-│   │      ├── pyrography.webp
-│   │      ├── sculpting.webp
-│   │      ├── soapmaking.webp
-│   │      ├── trash.webp
-│   │      └── weaving.webp
+│   │      ├── calligraphyjpg
+│   │      ├── candlemakingjpg
+│   │      ├── creativityjpg
+│   │      ├── decoupagejpg
+│   │      ├── digitalartjpg
+│   │      ├── drawingjpg
+│   │      ├── jewelrymakingjpg
+│   │      ├── mosaicjpg
+│   │      ├── paintingjpg
+│   │      ├── photographyjpg
+│   │      ├── pyrographyjpg
+│   │      ├── sculptingjpg
+│   │      ├── soapmakingjpg
+│   │      ├── trashjpg
+│   │      └── weavingjpg
 │   │  
 │   └── vite.svg
 ├── src

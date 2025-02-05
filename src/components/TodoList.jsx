@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import TodoListItem from "./TodoListItem";
 import styles from "./TodoList.module.css";
-import creativityIcon from "/images/icons/creativity.webp";
+import creativityIcon from "/images/icons/creativity.jpg";
 
 function TodoList({ todoList, onRemoveTodo }) {
   return (

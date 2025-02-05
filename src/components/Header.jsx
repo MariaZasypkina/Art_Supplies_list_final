@@ -26,7 +26,7 @@ function Header() {
         </ul>
       </nav>
       
-       <img src="/images/banner1.webp
+       <img src="/images/banner1.jpg
        " alt="ArtNest Banner" className={styles.banner} />
 
     </header>

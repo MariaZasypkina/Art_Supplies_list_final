@@ -30,7 +30,7 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
-  background: url("/images/background.webp") no-repeat center center fixed;
+  background: url("/images/background.jpg") no-repeat center center fixed;
   background-size: cover;
   font-family: "Inter", system-ui, sans-serif;
   color: #333;
