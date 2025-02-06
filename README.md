@@ -18,13 +18,14 @@ This project showcases state management, API interactions, and custom styling, w
 
 🛠 Built With
 
-React (Vite)
-Airtable API
-CSS Modules
-Google Fonts (Inter)
-Custom SVG & WebP Icons
+React (Vite) / 
+Node JS / 
+Airtable API / 
+CSS Modules / 
+Google Fonts / 
+Custom SVG & WebP Icons / 
 
-📌 Future Improvements
+📌 Future Improvements (not realized yet)
 
 ✅ User authentication & saved lists
 ✅ Dark mode
@@ -35,19 +36,25 @@ Custom SVG & WebP Icons
 This project is open-source under the MIT License.
 
 🔹 Created with ❤️ by Maria Zasypkina
+
+
 🔹 Part of the Code the Dream React Course (Ibis) 🚀
 
 Routes:
 
 http://localhost:5173 - main page
+
+
 http://localhost:5173/supplies - supplies list
+
+
 http://localhost:5173/about - about project page
 
 
 🚀 Getting Started
 
 1️⃣ Clone the Repository
-git clone https://github.com/MariaZasypkina/Art_Supplies_list.git
+git clone https://github.com/MariaZasypkina/Art_Supplies_list_final.git
 cd artnest-supplies-list
 
 2️⃣ Install Dependencies
