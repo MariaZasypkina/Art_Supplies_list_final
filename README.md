@@ -8,6 +8,7 @@ This project showcases state management, API interactions, and custom styling, w
 
 ✨ Features
 
+🎨 Select a hobby you are interested in
 🖌 Select recommended materials from a predefined list.
 ✏️ Add custom materials to your personal list.
 🗑 Remove items using an animated delete button.
