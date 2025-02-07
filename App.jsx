@@ -17,7 +17,7 @@ import {
   clearAirtableTable,
 } from "./airtableAPI.js";
 import materialsByMode from "./components/materials";
-import Header from "./components/header.jsx";
+import Header from "./components/Header.jsx";
 
 function App() {
   const [localTodoList, setLocalTodoList] = useState(() => {
