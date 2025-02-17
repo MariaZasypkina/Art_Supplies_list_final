@@ -18,6 +18,7 @@ import {
 } from "./airtableAPI.js";
 import materialsByMode from "./components/materials";
 import Header from "./components/Header.jsx";
+import Footer from "./components/Footer";
 
 function App() {
   const [localTodoList, setLocalTodoList] = useState(() => {
@@ -123,7 +124,6 @@ function App() {
         >
           <img
             src={`/images/icons/${mode.toLowerCase()}.jpg`}
-
             alt={mode}
             className="icon"
           />
@@ -145,17 +145,18 @@ function App() {
   }
 
   function SuppliesPage() {
+    const printList = () => {
+      const printContents = document
+        .getElementById("printableArea")
+        .cloneNode(true);
+      const newWindow = window.open("", "_blank");
 
-const printList = () => {
-  const printContents = document.getElementById("printableArea").cloneNode(true);
-  const newWindow = window.open("", "_blank");
-  
-  newWindow.document.body.appendChild(printContents);
-  newWindow.document.title = "Print List";
-  newWindow.focus();
-  newWindow.print();
-  newWindow.close();
-};
+      newWindow.document.body.appendChild(printContents);
+      newWindow.document.title = "Print List";
+      newWindow.focus();
+      newWindow.print();
+      newWindow.close();
+    };
 
     return (
       <div>
@@ -213,6 +214,8 @@ const printList = () => {
           <Route path="/supplies" element={<SuppliesPage />} />
           <Route path="/about" element={<AboutPage />} />
         </Routes>
+        <br></br>
+        <Footer />
       </div>
     </Router>
   );
